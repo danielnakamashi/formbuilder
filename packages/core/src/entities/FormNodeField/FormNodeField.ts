@@ -48,8 +48,8 @@ class FormNodeField<Value> extends FormNode {
 }
 
 /**
- * To avoid circular dependency I'm adding values to typeMapper here
+ * To avoid circular dependency, I'm adding values to typeMapper here
  */
 typeMapper[NodeType.FormNodeField] = FormNodeField
 
-export { FormNodeFieldConfig, FormNodeField }
+export { FormNodeFieldConfig, FormNodeFieldJson, FormNodeField }

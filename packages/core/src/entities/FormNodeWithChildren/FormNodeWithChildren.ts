@@ -38,7 +38,7 @@ class FormNodeWithChildren extends FormNode {
 }
 
 /**
- * To avoid circular dependency I'm adding values to typeMapper here
+ * To avoid circular dependency, I'm adding values to typeMapper here
  */
 typeMapper[NodeType.FormNodeWithChildren] = FormNodeWithChildren
 

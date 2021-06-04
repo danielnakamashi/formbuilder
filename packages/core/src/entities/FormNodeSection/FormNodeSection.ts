@@ -42,8 +42,8 @@ class FormNodeSection extends FormNodeWithChildren {
 }
 
 /**
- * To avoid circular dependency I'm adding values to typeMapper here
+ * To avoid circular dependency, I'm adding values to typeMapper here
  */
- typeMapper[NodeType.FormNodeSection] = FormNodeSection
+typeMapper[NodeType.FormNodeSection] = FormNodeSection
 
 export { FormNodeSectionConfig, FormNodeSectionJson, FormNodeSection }

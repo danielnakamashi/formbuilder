@@ -35,7 +35,7 @@ class FormNode {
 }
 
 /**
- * To avoid circular dependency I'm adding values to typeMapper here
+ * To avoid circular dependency, I'm adding values to typeMapper here
  */
 typeMapper[NodeType.FormNode] = FormNode
 
