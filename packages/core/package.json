@@ -2,8 +2,12 @@
   "name": "@form-build/core",
   "version": "0.0.0",
   "description": "Convert FormNodes to text and vice-versa",
-  "main": "index.js",
-  "repository": "git@github.com-personal:danielnakamashi/formbuilder.git",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "git@github.com:danielnakamashi/formbuilder.git",
   "author": "Daniel Nakamashi <dnakamashi@gmail.com>",
   "license": "MIT",
   "private": false
