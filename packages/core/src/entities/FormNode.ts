@@ -11,6 +11,8 @@ interface FormNodeJson {
   children: Array<FormNodeJson>
 }
 
+type Children<T extends FormNodeJson = FormNodeJson> = Array<T>
+
 class FormNode {
   protected _id: string
   protected _type: NodeType = NodeType.FormNode
@@ -55,4 +57,4 @@ class FormNode {
  */
 typeMapper[NodeType.FormNode] = FormNode
 
-export { FormNodeConfig, FormNode }
+export { FormNodeConfig, FormNodeJson, FormNode }

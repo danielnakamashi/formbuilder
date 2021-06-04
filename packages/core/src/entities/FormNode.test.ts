@@ -1,5 +1,5 @@
-import { FormNode } from './FormNode'
 import { NodeType } from 'enums/NodeType'
+import { FormNode } from './FormNode'
 
 describe('FormNode', () => {
   describe('should convert to Json', () => {
