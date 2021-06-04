@@ -2,15 +2,11 @@ import { FormNodeFieldJson, FormNodeField } from 'entities/FormNodeField'
 import { NodeType } from 'enums/NodeType'
 import { typeMapper } from 'utils/typeMapper'
 
-interface FormNodecheckboxJson extends FormNodeFieldJson<boolean> {
-  value: boolean
-}
-
 // @ts-expect-error: ts(2417)
 class FormNodeCheckbox extends FormNodeField<boolean> {
   override _type: NodeType = NodeType.FormNodeCheckbox
 
-  static override fromJson(json: FormNodecheckboxJson): FormNodeCheckbox {
+  static override fromJson(json: FormNodeFieldJson<boolean>): FormNodeCheckbox {
     return new FormNodeCheckbox(json.id, {
       name: json.name,
       value: json.value 
@@ -23,4 +19,4 @@ class FormNodeCheckbox extends FormNodeField<boolean> {
  */
 typeMapper[NodeType.FormNodeCheckbox] = FormNodeCheckbox
 
-export { FormNodecheckboxJson, FormNodeCheckbox }
+export { FormNodeCheckbox }

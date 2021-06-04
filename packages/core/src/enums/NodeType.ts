@@ -6,6 +6,7 @@ enum NodeType {
   FormNodeLabel,
   FormNodeField,
   FormNodeCheckbox,
+  FormNodeFieldText,
 }
 
 export { NodeType }
