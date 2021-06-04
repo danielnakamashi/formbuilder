@@ -6,6 +6,7 @@ const typeMapper: Record<NodeType, unknown> = {
   [NodeType.FormNodeSection]: undefined,
   [NodeType.FormNodeText]: undefined,
   [NodeType.FormNodeLabel]: undefined,
+  [NodeType.FormNodeField]: undefined,
 }
 
 export { typeMapper }
