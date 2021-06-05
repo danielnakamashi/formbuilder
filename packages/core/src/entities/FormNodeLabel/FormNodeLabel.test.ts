@@ -18,7 +18,7 @@ describe('FormNodeLabel', () => {
           text: 'text',
         },
       ],
-      element: 'div',
+      element: 'label',
     })
   })
 

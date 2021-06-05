@@ -12,6 +12,7 @@ describe('FormNodeInput', () => {
       expect(formNodeInput.toJson()).toEqual({
         id: 'id',
         type: NodeType.FormNodeInput,
+        element: 'input',
         name: 'name',
         value: 'value',
       })
@@ -26,6 +27,7 @@ describe('FormNodeInput', () => {
       expect(formNodeInput.toJson()).toEqual({
         id: 'id',
         type: NodeType.FormNodeInput,
+        element: 'input',
         name: 'name',
         value: 1,
       })

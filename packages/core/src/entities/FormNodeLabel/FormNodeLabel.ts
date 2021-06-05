@@ -21,11 +21,14 @@ class FormNodeLabel extends FormNodeWithChildren {
 
   constructor(id: string, config: FormNodeLabelConfig) {
     super(id, config)
+    this._element = config.element ?? 'label'
   }
 
   static override fromJson(json: FormNodeLabelJson): FormNodeLabel {
     return new FormNodeLabel(json.id, {
-      children: json.children.map((child) => (typeMapper[child.type] as typeof FormNode).fromJson(child) as FormNodeText)
+      children: json.children.map(
+        (child) => (typeMapper[child.type] as typeof FormNode).fromJson(child) as FormNodeText
+      ),
     })
   }
 }

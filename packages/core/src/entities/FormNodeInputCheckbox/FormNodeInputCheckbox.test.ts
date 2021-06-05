@@ -8,6 +8,7 @@ describe('FormNodeInputCheckbox', () => {
     expect(formNodeInputCheckbox.toJson()).toEqual({
       id: 'id',
       type: NodeType.FormNodeInputCheckbox,
+      element: 'input',
       name: 'checkbox',
       value: true,
     })
@@ -17,6 +18,7 @@ describe('FormNodeInputCheckbox', () => {
     const formNodeInputCheckbox = FormNodeInputCheckbox.fromJson({
       id: 'id',
       type: NodeType.FormNodeInputCheckbox,
+      element: 'input',
       name: 'checkbox',
       value: true,
     })

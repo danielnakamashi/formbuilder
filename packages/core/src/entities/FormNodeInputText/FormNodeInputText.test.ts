@@ -11,6 +11,7 @@ describe('FormNodeInputText', () => {
     expect(formNodeInputText.toJson()).toEqual({
       id: 'id',
       type: NodeType.FormNodeInputText,
+      element: 'input',
       name: 'name',
       value: 'value',
     })
@@ -20,6 +21,7 @@ describe('FormNodeInputText', () => {
     const formNodeInputText = FormNodeInputText.fromJson({
       id: 'id',
       type: NodeType.FormNodeInputText,
+      element: 'input',
       name: 'name',
       value: 'value',
     })
