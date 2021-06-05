@@ -1,4 +1,5 @@
 {
+  "parser": "babel-ts",
   "arrowParens": "always",
   "bracketSpacing": true,
   "embeddedLanguageFormatting": "auto",

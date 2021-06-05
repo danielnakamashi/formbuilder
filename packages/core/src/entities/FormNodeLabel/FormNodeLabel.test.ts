@@ -18,6 +18,7 @@ describe('FormNodeLabel', () => {
           text: 'text',
         },
       ],
+      element: 'div',
     })
   })
 
@@ -34,6 +35,7 @@ describe('FormNodeLabel', () => {
       ],
     })
 
+    expect(formNodeLabel).toBeInstanceOf(FormNodeLabel)
     expect(formNodeLabel.id).toEqual('id')
     expect(formNodeLabel.type).toEqual(NodeType.FormNodeLabel)
     expect(formNodeLabel.children).toHaveLength(1)

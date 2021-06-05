@@ -2,15 +2,19 @@
   "name": "@form-build/app",
   "version": "0.0.0",
   "description": "Use cases for @form-build",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "repository": "git@github.com:danielnakamashi/formbuilder.git",
   "author": "Daniel Nakamashi <dnakamashi@gmail.com>",
   "license": "MIT",
   "private": false,
-  "devDependencies": {
-    "husky": "^6.0.0"
-  },
   "scripts": {
-    "prepare": "husky install"
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@form-build/core": "*"
   }
 }

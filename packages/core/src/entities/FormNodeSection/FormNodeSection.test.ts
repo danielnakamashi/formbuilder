@@ -4,20 +4,22 @@ import { FormNodeSection, FormNodeSectionJson } from './FormNodeSection'
 describe('FormNodeSection', () => {
   describe('should convert to json', () => {
     test('with empty config', () => {
-      const formNodeSection = new FormNodeSection('id', {})
+      const formNodeSection = new FormNodeSection('id')
 
       expect(formNodeSection.toJson()).toEqual({
         id: 'id',
         type: NodeType.FormNodeSection,
         title: '',
         children: [],
+        element: 'div',
       })
     })
 
     test('with config', () => {
       const formNodeSection = new FormNodeSection('id', {
         title: 'title',
-        children: [new FormNodeSection('id2', { title: 'title2', children: [] })],
+        children: [new FormNodeSection('id2', { title: 'title2', children: [], element: 'p' })],
+        element: 'span',
       })
 
       expect(formNodeSection.toJson()).toEqual({
@@ -30,8 +32,10 @@ describe('FormNodeSection', () => {
             type: NodeType.FormNodeSection,
             title: 'title2',
             children: [],
+            element: 'p',
           },
         ],
+        element: 'span',
       })
     })
   })
@@ -45,6 +49,7 @@ describe('FormNodeSection', () => {
         children: [],
       }) as FormNodeSection
 
+      expect(formNode).toBeInstanceOf(FormNodeSection)
       expect(formNode.id).toEqual('id')
       expect(formNode.type).toEqual(NodeType.FormNodeSection)
     })
@@ -57,6 +62,7 @@ describe('FormNodeSection', () => {
         children: [],
       }) as FormNodeSection
 
+      expect(formNode).toBeInstanceOf(FormNodeSection)
       expect(formNode.id).toEqual('id')
       expect(formNode.type).toEqual(NodeType.FormNodeSection)
       expect(formNode.title).toEqual('title')
@@ -77,6 +83,7 @@ describe('FormNodeSection', () => {
         ],
       }) as FormNodeSection
 
+      expect(formNode).toBeInstanceOf(FormNodeSection)
       expect(formNode.id).toEqual('id')
       expect(formNode.type).toEqual(NodeType.FormNodeSection)
       expect(formNode.title).toEqual('title')

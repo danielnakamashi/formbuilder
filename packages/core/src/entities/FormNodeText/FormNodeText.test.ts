@@ -19,6 +19,7 @@ describe('FormNodeText', () => {
       text: 'text',
     })
 
+    expect(formNodeText).toBeInstanceOf(FormNodeText)
     expect(formNodeText.id).toEqual('id')
     expect(formNodeText.type).toEqual(NodeType.FormNodeText)
     expect(formNodeText.text).toEqual('text')

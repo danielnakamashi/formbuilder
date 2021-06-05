@@ -1,28 +1,28 @@
 import { FormNode } from 'entities/FormNode'
-import { FormNodeField } from 'entities/FormNodeField'
+import { FormNodeInput } from 'entities/FormNodeInput'
 import { ActionType } from 'enums/automation/ActionType'
 import { Condition } from 'enums/automation/Condition'
 
 type Trigger<T> =
   | {
-      field: FormNodeField<T>
+      field: FormNodeInput<T>
       condition: Condition.Equals
-      valueOrField: T | FormNodeField<T>
+      valueOrField: T | FormNodeInput<T>
     }
   | {
-      field: FormNodeField<number>
+      field: FormNodeInput<number>
       condition:
         | Condition.GreaterOrEqualsThan
         | Condition.GreaterThan
         | Condition.LessOrEqualsThan
         | Condition.LessThan
-      valueOrField: number | FormNodeField<number>
+      valueOrField: number | FormNodeInput<number>
     }
 
 interface Action {
   type: ActionType.ChangeProperty
   node: FormNode
-  properties: Record<string, any | FormNodeField<any>>
+  properties: Record<string, any | FormNodeInput<any>>
 }
 
 interface IAutomation<TriggerValue> {
@@ -30,4 +30,21 @@ interface IAutomation<TriggerValue> {
   action: Action
 }
 
-export { Trigger, Action, IAutomation }
+interface TriggerJson<T> {
+  field: { id: string }
+  condition: Condition
+  valueOrField: T | { id: string }
+}
+
+interface ActionJson {
+  type: ActionType.ChangeProperty
+  node: { id: string }
+  properties: Record<string, unknown>
+}
+
+interface AutomationJson<TriggerValue> {
+  trigger: TriggerJson<TriggerValue>
+  action: ActionJson
+}
+
+export { Trigger, Action, IAutomation, TriggerJson, ActionJson, AutomationJson }

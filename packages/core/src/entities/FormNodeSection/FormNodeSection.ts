@@ -1,4 +1,8 @@
-import { FormNodeWithChildrenConfig, FormNodeWithChildrenJson, FormNodeWithChildren } from 'entities/FormNodeWithChildren'
+import {
+  FormNodeWithChildrenConfig,
+  FormNodeWithChildrenJson,
+  FormNodeWithChildren,
+} from 'entities/FormNodeWithChildren'
 import { FormNode } from 'entities/FormNode'
 import { NodeType } from 'enums/NodeType'
 import { typeMapper } from 'utils/typeMapper'
@@ -27,11 +31,11 @@ class FormNodeSection extends FormNodeWithChildren {
   override toJson(): FormNodeSectionJson {
     return {
       ...super.toJson(),
-      title: this.title
+      title: this.title,
     }
   }
 
-  static override fromJson(json: FormNodeSectionJson) {
+  static override fromJson(json: FormNodeSectionJson): FormNodeSection {
     return new FormNodeSection(json.id, {
       title: json.title,
       children: json.children.map((child) =>

@@ -2,22 +2,22 @@ import { FormNodeJson, FormNode } from 'entities/FormNode'
 import { NodeType } from 'enums/NodeType'
 import { typeMapper } from 'utils/typeMapper'
 
-interface FormNodeFieldConfig<Value> {
+interface FormNodeInputConfig<Value> {
   name: string
   value: Value
 }
 
-interface FormNodeFieldJson<Value> extends FormNodeJson {
+interface FormNodeInputJson<Value> extends FormNodeJson {
   name: string
   value: Value
 }
 
-class FormNodeField<Value> extends FormNode {
-  override _type: NodeType = NodeType.FormNodeField
+class FormNodeInput<Value> extends FormNode {
+  override _type: NodeType = NodeType.FormNodeInput
   protected _name: string
   protected _value: Value
 
-  constructor(id: string, config: FormNodeFieldConfig<Value>) {
+  constructor(id: string, config: FormNodeInputConfig<Value>) {
     super(id)
     this._name = config.name
     this._value = config.value
@@ -31,18 +31,18 @@ class FormNodeField<Value> extends FormNode {
     return this._value
   }
 
-  override toJson(): FormNodeFieldJson<Value> {
+  override toJson(): FormNodeInputJson<Value> {
     return {
       ...super.toJson(),
       name: this.name,
-      value: this.value
+      value: this.value,
     }
   }
 
-  static override fromJson<T>(json: FormNodeFieldJson<T>): FormNodeField<T> {
-    return new FormNodeField<T>(json.id, {
+  static override fromJson<T>(json: FormNodeInputJson<T>): FormNodeInput<T> {
+    return new FormNodeInput<T>(json.id, {
       name: json.name,
-      value: json.value
+      value: json.value,
     })
   }
 }
@@ -50,6 +50,6 @@ class FormNodeField<Value> extends FormNode {
 /**
  * To avoid circular dependency, I'm adding values to typeMapper here
  */
-typeMapper[NodeType.FormNodeField] = FormNodeField
+typeMapper[NodeType.FormNodeInput] = FormNodeInput
 
-export { FormNodeFieldConfig, FormNodeFieldJson, FormNodeField }
+export { FormNodeInputConfig, FormNodeInputJson, FormNodeInput }

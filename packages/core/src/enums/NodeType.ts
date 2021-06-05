@@ -1,12 +1,13 @@
 enum NodeType {
   FormNode,
-  FormNodeWithChildren,
+  FormNodeInputCheckbox,
+  FormNodeInput,
+  FormNodeInputText,
+  FormNodeLabel,
   FormNodeSection,
   FormNodeText,
-  FormNodeLabel,
-  FormNodeField,
-  FormNodeCheckbox,
-  FormNodeFieldText,
+  FormNodeWithChildren,
+  FormNodeWithElement,
 }
 
 export { NodeType }

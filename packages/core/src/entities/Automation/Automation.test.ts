@@ -2,16 +2,16 @@ import { Automation, createTrigger } from './Automation'
 import { FormNodeText, FormNodeTextJson } from 'entities/FormNodeText'
 import { Condition } from 'enums/automation/Condition'
 import { ActionType } from 'enums/automation/ActionType'
-import { FormNodeFieldText } from 'entities/FormNodeFieldText'
+import { FormNodeInputText } from 'entities/FormNodeInputText'
 import { NodeType } from 'enums/NodeType'
-import { FormNodeFieldJson } from 'entities/FormNodeField'
+import { FormNodeInputJson } from 'entities/FormNodeInput'
 
 describe('Automation', () => {
   describe('should convert to json', () => {
     test('with plain values', () => {
       const automation = new Automation(
         createTrigger({
-          field: new FormNodeFieldText('id', { name: 'name', value: 'value' }),
+          field: new FormNodeInputText('id', { name: 'name', value: 'value' }),
           condition: Condition.Equals,
           valueOrField: 'value',
         }),
@@ -41,18 +41,18 @@ describe('Automation', () => {
     })
 
     test('with field values', () => {
-      const formFieldText = new FormNodeFieldText('id2', { name: 'name2', value: 'value2' })
+      const formInputText = new FormNodeInputText('id2', { name: 'name2', value: 'value2' })
       const automation = new Automation(
         createTrigger({
-          field: new FormNodeFieldText('id', { name: 'name', value: 'value' }),
+          field: new FormNodeInputText('id', { name: 'name', value: 'value' }),
           condition: Condition.Equals,
-          valueOrField: formFieldText,
+          valueOrField: formInputText,
         }),
         {
           type: ActionType.ChangeProperty,
           node: new FormNodeText('id3', { text: 'text' }),
           properties: {
-            text: formFieldText,
+            text: formInputText,
           },
         }
       )
@@ -80,10 +80,10 @@ describe('Automation', () => {
         [
           {
             id: 'id',
-            type: NodeType.FormNodeFieldText,
+            type: NodeType.FormNodeInputText,
             name: 'name',
             value: 'value',
-          } as FormNodeFieldJson<string>,
+          } as FormNodeInputJson<string>,
           {
             id: 'id2',
             type: NodeType.FormNodeText,
@@ -106,8 +106,9 @@ describe('Automation', () => {
         }
       )
 
+      expect(automation).toBeInstanceOf(Automation)
       expect(automation.trigger.field.id).toEqual('id')
-      expect(automation.trigger.field.type).toEqual(NodeType.FormNodeFieldText)
+      expect(automation.trigger.field.type).toEqual(NodeType.FormNodeInputText)
       expect(automation.trigger.field.name).toEqual('name')
       expect(automation.trigger.field.value).toEqual('value')
       expect(automation.trigger.condition).toEqual(Condition.Equals)
@@ -127,16 +128,16 @@ describe('Automation', () => {
         [
           {
             id: 'id',
-            type: NodeType.FormNodeFieldText,
+            type: NodeType.FormNodeInputText,
             name: 'name',
             value: 'value',
-          } as FormNodeFieldJson<string>,
+          } as FormNodeInputJson<string>,
           {
             id: 'id2',
-            type: NodeType.FormNodeFieldText,
+            type: NodeType.FormNodeInputText,
             name: 'name2',
             value: 'value2',
-          } as FormNodeFieldJson<string>,
+          } as FormNodeInputJson<string>,
           {
             id: 'id3',
             type: NodeType.FormNodeText,
@@ -159,16 +160,17 @@ describe('Automation', () => {
         }
       )
 
+      expect(automation).toBeInstanceOf(Automation)
       expect(automation.trigger.field.id).toEqual('id')
-      expect(automation.trigger.field.type).toEqual(NodeType.FormNodeFieldText)
+      expect(automation.trigger.field.type).toEqual(NodeType.FormNodeInputText)
       expect(automation.trigger.field.name).toEqual('name')
       expect(automation.trigger.field.value).toEqual('value')
       expect(automation.trigger.condition).toEqual(Condition.Equals)
 
-      const triggerValue = automation.trigger.valueOrField as FormNodeFieldText
+      const triggerValue = automation.trigger.valueOrField as FormNodeInputText
 
       expect(triggerValue.id).toEqual('id2')
-      expect(triggerValue.type).toEqual(NodeType.FormNodeFieldText)
+      expect(triggerValue.type).toEqual(NodeType.FormNodeInputText)
       expect(triggerValue.name).toEqual('name2')
       expect(triggerValue.value).toEqual('value2')
       expect(automation.action.type).toEqual(ActionType.ChangeProperty)
@@ -179,7 +181,7 @@ describe('Automation', () => {
       expect(actionNode.type).toEqual(NodeType.FormNodeText)
       expect(actionNode.text).toEqual('text')
       expect(automation.action.properties.text.id).toEqual('id2')
-      expect(automation.action.properties.text.type).toEqual(NodeType.FormNodeFieldText)
+      expect(automation.action.properties.text.type).toEqual(NodeType.FormNodeInputText)
       expect(automation.action.properties.text.name).toEqual('name2')
       expect(automation.action.properties.text.value).toEqual('value2')
     })

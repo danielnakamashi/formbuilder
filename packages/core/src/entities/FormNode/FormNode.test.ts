@@ -17,6 +17,7 @@ describe('FormNode', () => {
       type: NodeType.FormNode,
     })
 
+    expect(formNode).toBeInstanceOf(FormNode)
     expect(formNode.id).toEqual('id')
     expect(formNode.type).toEqual(NodeType.FormNode)
   })

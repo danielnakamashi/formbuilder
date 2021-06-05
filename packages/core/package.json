@@ -12,6 +12,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "build": "tsc",
     "lint:fix": "tsc --noEmit -p ./tsconfig.json"
   }
 }

@@ -1,9 +1,9 @@
 import { FormNode, FormNodeJson } from 'entities/FormNode'
-import { FormNodeField } from 'entities/FormNodeField'
+import { FormNodeInput } from 'entities/FormNodeInput'
 import { ActionType } from 'enums/automation/ActionType'
 import { Condition } from 'enums/automation/Condition'
 import { typeMapper } from 'utils/typeMapper'
-import { Trigger, Action } from './types'
+import { Trigger, Action, TriggerJson, ActionJson } from './types'
 
 interface AutomationJson<TriggerValue> {
   trigger: {
@@ -34,42 +34,34 @@ class Automation<TriggerValue> {
     return this._action
   }
 
-  protected triggerToJson() {
+  protected triggerToJson(): TriggerJson<TriggerValue> {
     return {
       field: { id: this.trigger.field.id },
       condition: this.trigger.condition,
       valueOrField:
-        this.trigger.valueOrField instanceof FormNodeField
+        this.trigger.valueOrField instanceof FormNodeInput
           ? { id: this.trigger.valueOrField.id }
-          : this.trigger.valueOrField,
+          : (this.trigger.valueOrField as TriggerValue),
     }
   }
 
-  protected actionToJson() {
-    const actionJson: Record<string, unknown> = {
+  protected actionToJson(): ActionJson {
+    return {
       type: this.action.type,
       node: { id: this.action.node.id },
+      properties: Object.entries(this.action.properties).reduce((prev, [key, value]) => {
+        return {
+          ...prev,
+          [key]: value instanceof FormNodeInput ? { id: value.id } : value,
+        }
+      }, {}),
     }
-
-    if (this.action.type === ActionType.ChangeProperty) {
-      actionJson.properties = Object.entries(this.action.properties).reduce(
-        (prev, [key, value]) => {
-          return {
-            ...prev,
-            [key]: value instanceof FormNodeField ? { id: value.id } : value,
-          }
-        },
-        {}
-      )
-    }
-
-    return actionJson
   }
 
   protected static getValueOrField<T>(
     nodes: ReadonlyArray<FormNodeJson>,
     valueOrField: T | { id: string }
-  ) {
+  ): FormNode | T {
     if (typeof valueOrField === 'object' && valueOrField !== null && 'id' in valueOrField) {
       const id = valueOrField.id
       const triggerValue = nodes.find((node) => node.id === id)
@@ -84,7 +76,7 @@ class Automation<TriggerValue> {
     }
   }
 
-  protected static findNodeById(nodes: ReadonlyArray<FormNodeJson>, id: string) {
+  protected static findNodeById(nodes: ReadonlyArray<FormNodeJson>, id: string): FormNode {
     const node = nodes.find((node) => node.id === id)
 
     if (!node) {
@@ -94,7 +86,7 @@ class Automation<TriggerValue> {
     return (typeMapper[node.type] as typeof FormNode).fromJson(node)
   }
 
-  toJson() {
+  toJson(): AutomationJson<TriggerValue> {
     return {
       trigger: this.triggerToJson(),
       action: this.actionToJson(),
@@ -104,9 +96,9 @@ class Automation<TriggerValue> {
   static fromJson<TriggerValue>(
     nodes: ReadonlyArray<FormNodeJson>,
     json: AutomationJson<TriggerValue>
-  ) {
+  ): Automation<TriggerValue> {
     const trigger = createTrigger<TriggerValue>({
-      field: Automation.findNodeById(nodes, json.trigger.field.id) as FormNodeField<TriggerValue>,
+      field: Automation.findNodeById(nodes, json.trigger.field.id) as FormNodeInput<TriggerValue>,
       condition: json.trigger.condition,
       valueOrField: Automation.getValueOrField<TriggerValue>(nodes, json.trigger.valueOrField),
     } as Trigger<TriggerValue>)
@@ -122,10 +114,7 @@ class Automation<TriggerValue> {
       }, {}),
     }
 
-    return {
-      trigger,
-      action,
-    }
+    return new Automation<TriggerValue>(trigger, action)
   }
 }
 

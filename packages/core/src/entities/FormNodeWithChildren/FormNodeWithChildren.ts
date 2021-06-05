@@ -1,21 +1,26 @@
 import { FormNode, FormNodeJson } from 'entities/FormNode'
+import {
+  FormNodeWithElementJson,
+  FormNodeWithElement,
+  FormNodeWithElementConfig,
+} from 'entities/FormNodeWithElement/FormNodeWithElement'
 import { NodeType } from 'enums/NodeType'
 import { typeMapper } from 'utils/typeMapper'
 
-interface FormNodeWithChildrenConfig {
+interface FormNodeWithChildrenConfig extends FormNodeWithElementConfig {
   children?: Array<FormNode>
 }
 
-interface FormNodeWithChildrenJson extends FormNodeJson {
+interface FormNodeWithChildrenJson extends FormNodeWithElementJson {
   children: Array<FormNodeJson>
 }
 
-class FormNodeWithChildren extends FormNode {
-  protected _children: Array<FormNode>
+class FormNodeWithChildren extends FormNodeWithElement {
   override _type: NodeType = NodeType.FormNodeWithChildren
+  protected _children: Array<FormNode>
 
   constructor(id: string, config: FormNodeWithChildrenConfig = {}) {
-    super(id)
+    super(id, config)
     this._children = config.children ?? []
   }
 
@@ -26,13 +31,18 @@ class FormNodeWithChildren extends FormNode {
   override toJson(): FormNodeWithChildrenJson {
     return {
       ...super.toJson(),
-      children: this.children.map((child) => child.toJson())
+      children: this.children.map((child) => child.toJson()),
     }
   }
 
   static override fromJson(json: FormNodeWithChildrenJson): FormNodeWithChildren {
-    return new FormNodeWithChildren(json.id, {
-      children: json.children.map((child) => (typeMapper[child.type] as typeof FormNode).fromJson(child))
+    const { id, ...jsonRest } = json
+
+    return new FormNodeWithChildren(id, {
+      ...jsonRest,
+      children: json.children.map((child) =>
+        (typeMapper[child.type] as typeof FormNode).fromJson(child)
+      ),
     })
   }
 }
