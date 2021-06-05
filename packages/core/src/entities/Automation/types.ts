@@ -25,7 +25,7 @@ interface Action {
   properties: Record<string, any | FormNodeField<any>>
 }
 
-interface IAutomation<TriggerValue, ActionValue> {
+interface IAutomation<TriggerValue> {
   trigger: Trigger<TriggerValue>
   action: Action
 }
