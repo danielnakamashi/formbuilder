@@ -10,5 +10,8 @@
   "repository": "git@github.com:danielnakamashi/formbuilder.git",
   "author": "Daniel Nakamashi <dnakamashi@gmail.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "lint:fix": "tsc --noEmit -p ./tsconfig.json"
+  }
 }
