@@ -17,7 +17,7 @@ interface AutomationJson<TriggerValue> {
     properties: Record<string, any | { id: string }>
   }
 }
-class Automation<TriggerValue, ActionValue> {
+class Automation<TriggerValue> {
   protected _trigger: Trigger<TriggerValue>
   protected _action: Action
 
@@ -105,7 +105,7 @@ class Automation<TriggerValue, ActionValue> {
     nodes: ReadonlyArray<FormNodeJson>,
     json: AutomationJson<TriggerValue>
   ) {
-    const trigger = createTrigger({
+    const trigger = createTrigger<TriggerValue>({
       field: Automation.findNodeById(nodes, json.trigger.field.id) as FormNodeField<TriggerValue>,
       condition: json.trigger.condition,
       valueOrField: Automation.getValueOrField<TriggerValue>(nodes, json.trigger.valueOrField),

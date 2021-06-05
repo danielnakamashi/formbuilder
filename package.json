@@ -12,7 +12,9 @@
   },
   "scripts": {
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "lint": "eslint --fix",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
