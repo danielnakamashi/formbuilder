@@ -1,22 +1,8 @@
 import { FormNode, FormNodeJson } from 'core/entities/FormNode'
 import { FormNodeInput } from 'core/entities/FormNodeInput'
-import { ActionType } from 'core/enums/automation/ActionType'
-import { Condition } from 'core/enums/automation/Condition'
 import { typeMapper } from 'core/utils/typeMapper'
-import { Trigger, Action, TriggerJson, ActionJson } from './types'
+import { Trigger, Action, TriggerJson, ActionJson, AutomationJson } from './types'
 
-interface AutomationJson {
-  trigger: {
-    field: { id: string }
-    condition: Condition
-    valueOrField: string | { id: string }
-  }
-  action: {
-    type: ActionType.ChangeProperty
-    node: { id: string }
-    properties: Record<string, string | { id: string }>
-  }
-}
 class Automation {
   protected _trigger: Trigger
   protected _action: Action

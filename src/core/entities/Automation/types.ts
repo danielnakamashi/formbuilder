@@ -29,7 +29,7 @@ interface TriggerJson {
 interface ActionJson {
   type: ActionType.ChangeProperty
   node: { id: string }
-  properties: Record<string, string>
+  properties: Record<string, string | { id: string }>
 }
 
 interface AutomationJson {
