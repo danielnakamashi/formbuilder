@@ -16,6 +16,7 @@ describe('FormNodeInputCheckbox', () => {
       name: 'checkbox',
       value: 'value',
       checked: true,
+      inputType: 'checkbox',
     })
   })
 
@@ -34,6 +35,7 @@ describe('FormNodeInputCheckbox', () => {
       expect(formNodeInputCheckbox.type).toEqual(NodeType.FormNodeInputCheckbox)
       expect(formNodeInputCheckbox.name).toEqual('checkbox')
       expect(formNodeInputCheckbox.value).toEqual('value')
+      expect(formNodeInputCheckbox.inputType).toEqual('checkbox')
     })
 
     test('with checked property', () => {
@@ -52,6 +54,7 @@ describe('FormNodeInputCheckbox', () => {
       expect(formNodeInputCheckbox.name).toEqual('checkbox')
       expect(formNodeInputCheckbox.value).toEqual('value')
       expect(formNodeInputCheckbox.checked).toBe(true)
+      expect(formNodeInputCheckbox.inputType).toEqual('checkbox')
     })
   })
 })

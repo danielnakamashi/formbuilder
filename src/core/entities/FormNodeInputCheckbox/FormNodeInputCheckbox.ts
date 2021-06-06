@@ -18,6 +18,7 @@ class FormNodeInputCheckbox extends FormNodeInput {
   constructor(id: string, config: FormNodeInputCheckboxConfig) {
     super(id, config)
     this._checked = config.checked ?? false
+    this._inputType = 'checkbox'
   }
 
   get checked(): boolean {

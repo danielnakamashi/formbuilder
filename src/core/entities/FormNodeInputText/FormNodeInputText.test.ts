@@ -14,6 +14,7 @@ describe('FormNodeInputText', () => {
       element: 'input',
       name: 'name',
       value: 'value',
+      inputType: 'text',
     })
   })
 
@@ -31,5 +32,6 @@ describe('FormNodeInputText', () => {
     expect(formNodeInputText.type).toEqual(NodeType.FormNodeInputText)
     expect(formNodeInputText.name).toEqual('name')
     expect(formNodeInputText.value).toEqual('value')
+    expect(formNodeInputText.inputType).toEqual('text')
   })
 })
