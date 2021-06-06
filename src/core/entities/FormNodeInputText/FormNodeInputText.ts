@@ -2,11 +2,10 @@ import { FormNodeInputJson, FormNodeInput } from 'core/entities/FormNodeInput'
 import { NodeType } from 'core/enums/NodeType'
 import { typeMapper } from 'core/utils/typeMapper'
 
-// @ts-expect-error: ts(2417
-class FormNodeInputText extends FormNodeInput<string> {
+class FormNodeInputText extends FormNodeInput {
   protected override _type: NodeType = NodeType.FormNodeInputText
 
-  static override fromJson(json: FormNodeInputJson<string>): FormNodeInputText {
+  static override fromJson(json: FormNodeInputJson): FormNodeInputText {
     return new FormNodeInputText(json.id, {
       name: json.name,
       value: json.value,

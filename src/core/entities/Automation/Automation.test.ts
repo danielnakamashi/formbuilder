@@ -1,4 +1,4 @@
-import { Automation, createTrigger } from './Automation'
+import { Automation } from './Automation'
 import { FormNodeText, FormNodeTextJson } from 'core/entities/FormNodeText'
 import { Condition } from 'core/enums/automation/Condition'
 import { ActionType } from 'core/enums/automation/ActionType'
@@ -10,11 +10,11 @@ describe('Automation', () => {
   describe('should convert to json', () => {
     test('with plain values', () => {
       const automation = new Automation(
-        createTrigger({
+        {
           field: new FormNodeInputText('id', { name: 'name', value: 'value' }),
           condition: Condition.Equals,
           valueOrField: 'value',
-        }),
+        },
         {
           type: ActionType.ChangeProperty,
           node: new FormNodeText('id2', { text: 'text' }),
@@ -43,11 +43,11 @@ describe('Automation', () => {
     test('with field values', () => {
       const formInputText = new FormNodeInputText('id2', { name: 'name2', value: 'value2' })
       const automation = new Automation(
-        createTrigger({
+        {
           field: new FormNodeInputText('id', { name: 'name', value: 'value' }),
           condition: Condition.Equals,
           valueOrField: formInputText,
-        }),
+        },
         {
           type: ActionType.ChangeProperty,
           node: new FormNodeText('id3', { text: 'text' }),
@@ -83,7 +83,7 @@ describe('Automation', () => {
             type: NodeType.FormNodeInputText,
             name: 'name',
             value: 'value',
-          } as FormNodeInputJson<string>,
+          } as FormNodeInputJson,
           {
             id: 'id2',
             type: NodeType.FormNodeText,
@@ -131,13 +131,13 @@ describe('Automation', () => {
             type: NodeType.FormNodeInputText,
             name: 'name',
             value: 'value',
-          } as FormNodeInputJson<string>,
+          } as FormNodeInputJson,
           {
             id: 'id2',
             type: NodeType.FormNodeInputText,
             name: 'name2',
             value: 'value2',
-          } as FormNodeInputJson<string>,
+          } as FormNodeInputJson,
           {
             id: 'id3',
             type: NodeType.FormNodeText,
@@ -180,10 +180,13 @@ describe('Automation', () => {
       expect(actionNode.id).toEqual('id3')
       expect(actionNode.type).toEqual(NodeType.FormNodeText)
       expect(actionNode.text).toEqual('text')
-      expect(automation.action.properties.text.id).toEqual('id2')
-      expect(automation.action.properties.text.type).toEqual(NodeType.FormNodeInputText)
-      expect(automation.action.properties.text.name).toEqual('name2')
-      expect(automation.action.properties.text.value).toEqual('value2')
+
+      const inputText = automation.action.properties.text as FormNodeInputText
+
+      expect(inputText.id).toEqual('id2')
+      expect(inputText.type).toEqual(NodeType.FormNodeInputText)
+      expect(inputText.name).toEqual('name2')
+      expect(inputText.value).toEqual('value2')
     })
   })
 })

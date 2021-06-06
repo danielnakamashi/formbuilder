@@ -6,22 +6,22 @@ import {
 import { NodeType } from 'core/enums/NodeType'
 import { typeMapper } from 'core/utils/typeMapper'
 
-interface FormNodeInputConfig<Value> extends FormNodeWithElementConfig {
+interface FormNodeInputConfig extends FormNodeWithElementConfig {
   name: string
-  value: Value
+  value: string
 }
 
-interface FormNodeInputJson<Value> extends FormNodeWithElementJson {
+interface FormNodeInputJson extends FormNodeWithElementJson {
   name: string
-  value: Value
+  value: string
 }
 
-class FormNodeInput<Value> extends FormNodeWithElement {
+class FormNodeInput extends FormNodeWithElement {
   protected override _type: NodeType = NodeType.FormNodeInput
   protected _name: string
-  protected _value: Value
+  protected _value: string
 
-  constructor(id: string, config: FormNodeInputConfig<Value>) {
+  constructor(id: string, config: FormNodeInputConfig) {
     super(id)
     this._element = config.element ?? 'input'
     this._name = config.name
@@ -32,11 +32,11 @@ class FormNodeInput<Value> extends FormNodeWithElement {
     return this._name
   }
 
-  get value(): Value {
+  get value(): string {
     return this._value
   }
 
-  override toJson(): FormNodeInputJson<Value> {
+  override toJson(): FormNodeInputJson {
     return {
       ...super.toJson(),
       name: this.name,
@@ -44,8 +44,8 @@ class FormNodeInput<Value> extends FormNodeWithElement {
     }
   }
 
-  static override fromJson<T>(json: FormNodeInputJson<T>): FormNodeInput<T> {
-    return new FormNodeInput<T>(json.id, {
+  static override fromJson(json: FormNodeInputJson): FormNodeInput {
+    return new FormNodeInput(json.id, {
       name: json.name,
       value: json.value,
     })

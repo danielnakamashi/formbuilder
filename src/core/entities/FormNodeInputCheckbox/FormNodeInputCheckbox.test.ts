@@ -3,30 +3,55 @@ import { FormNodeInputCheckbox } from './FormNodeInputCheckbox'
 
 describe('FormNodeInputCheckbox', () => {
   it('should convert to json', () => {
-    const formNodeInputCheckbox = new FormNodeInputCheckbox('id', { name: 'checkbox', value: true })
+    const formNodeInputCheckbox = new FormNodeInputCheckbox('id', {
+      name: 'checkbox',
+      value: 'value',
+      checked: true,
+    })
 
     expect(formNodeInputCheckbox.toJson()).toEqual({
       id: 'id',
       type: NodeType.FormNodeInputCheckbox,
       element: 'input',
       name: 'checkbox',
-      value: true,
+      value: 'value',
+      checked: true,
     })
   })
 
-  it('should convert from json', () => {
-    const formNodeInputCheckbox = FormNodeInputCheckbox.fromJson({
-      id: 'id',
-      type: NodeType.FormNodeInputCheckbox,
-      element: 'input',
-      name: 'checkbox',
-      value: true,
+  describe('should convert from json', () => {
+    test('without checked property', () => {
+      const formNodeInputCheckbox = FormNodeInputCheckbox.fromJson({
+        id: 'id',
+        type: NodeType.FormNodeInputCheckbox,
+        element: 'input',
+        name: 'checkbox',
+        value: 'value',
+      })
+
+      expect(formNodeInputCheckbox).toBeInstanceOf(FormNodeInputCheckbox)
+      expect(formNodeInputCheckbox.id).toEqual('id')
+      expect(formNodeInputCheckbox.type).toEqual(NodeType.FormNodeInputCheckbox)
+      expect(formNodeInputCheckbox.name).toEqual('checkbox')
+      expect(formNodeInputCheckbox.value).toEqual('value')
     })
 
-    expect(formNodeInputCheckbox).toBeInstanceOf(FormNodeInputCheckbox)
-    expect(formNodeInputCheckbox.id).toEqual('id')
-    expect(formNodeInputCheckbox.type).toEqual(NodeType.FormNodeInputCheckbox)
-    expect(formNodeInputCheckbox.name).toEqual('checkbox')
-    expect(formNodeInputCheckbox.value).toEqual(true)
+    test('with checked property', () => {
+      const formNodeInputCheckbox = FormNodeInputCheckbox.fromJson({
+        id: 'id',
+        type: NodeType.FormNodeInputCheckbox,
+        element: 'input',
+        name: 'checkbox',
+        value: 'value',
+        checked: true,
+      })
+
+      expect(formNodeInputCheckbox).toBeInstanceOf(FormNodeInputCheckbox)
+      expect(formNodeInputCheckbox.id).toEqual('id')
+      expect(formNodeInputCheckbox.type).toEqual(NodeType.FormNodeInputCheckbox)
+      expect(formNodeInputCheckbox.name).toEqual('checkbox')
+      expect(formNodeInputCheckbox.value).toEqual('value')
+      expect(formNodeInputCheckbox.checked).toBe(true)
+    })
   })
 })
