@@ -66,9 +66,7 @@ export default {
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  // moduleDirectories: [
-  //   "node_modules"
-  // ],
+  moduleDirectories: ['node_modules', '<rootDir>/src'],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -96,7 +94,7 @@ export default {
   preset: 'ts-jest',
 
   // Run tests from one or more projects
-  projects: ['<rootDir>/packages/core/jest.config.ts'],
+  // projects: [],
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
