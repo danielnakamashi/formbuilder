@@ -1,19 +1,19 @@
 import {
-  TransformObjects,
-  TransformObjectsInput,
-  TransformObjectsOutput,
-  TransformObjectsService,
-} from 'app/use-cases/transformObjects'
+  BuildForm,
+  BuildFormInput,
+  BuildFormOutput,
+  BuildFormService,
+} from 'app/use-cases/buildForm'
 
-class FormBuilder implements TransformObjects {
-  #service: TransformObjectsService
+class FormBuilder implements BuildForm {
+  #service: BuildFormService
 
-  constructor(service: TransformObjectsService) {
+  constructor(service: BuildFormService) {
     this.#service = service
   }
 
-  transformObjects({ node }: TransformObjectsInput): TransformObjectsOutput {
-    return this.#service.transformObjects(node)
+  buildForm({ node, automations }: BuildFormInput): BuildFormOutput {
+    return this.#service.buildForm(node, automations)
   }
 }
 
