@@ -25,7 +25,10 @@ class FormNodeLabel extends FormNodeWithChildren {
   }
 
   static override fromJson(json: FormNodeLabelJson): FormNodeLabel {
-    return new FormNodeLabel(json.id, {
+    const { id, ...rest } = json
+
+    return new FormNodeLabel(id, {
+      ...rest,
       children: json.children.map(
         (child) => (typeMapper[child.type] as typeof FormNode).fromJson(child) as FormNodeText
       ),

@@ -11,6 +11,7 @@ describe('FormNodeWithChildren', () => {
         type: NodeType.FormNodeWithChildren,
         children: [],
         element: 'div',
+        isVisible: true,
       })
     })
 
@@ -29,9 +30,11 @@ describe('FormNodeWithChildren', () => {
             type: NodeType.FormNodeWithChildren,
             children: [],
             element: 'div',
+            isVisible: true,
           },
         ],
         element: 'span',
+        isVisible: true,
       })
     })
   })

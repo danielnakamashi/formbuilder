@@ -23,6 +23,7 @@ class Automation {
   protected triggerToJson(): TriggerJson {
     return {
       field: { id: this.trigger.field.id },
+      event: this.trigger.event,
       condition: this.trigger.condition,
       valueOrField:
         this.trigger.valueOrField instanceof FormNodeInput
@@ -84,11 +85,12 @@ class Automation {
   static fromJson(nodes: ReadonlyArray<FormNodeJson>, json: AutomationJson): Automation {
     const trigger = {
       field: Automation.findNodeById(nodes, json.trigger.field.id) as FormNodeInput,
+      event: json.trigger.event,
       condition: json.trigger.condition,
       valueOrField: Automation.getValueOrField(nodes, json.trigger.valueOrField),
     }
 
-    const action: Action = {
+    const action = createAction({
       type: json.action.type,
       node: Automation.findNodeById(nodes, json.action.node.id),
       properties: Object.entries(json.action.properties).reduce((prev, [key, value]) => {
@@ -97,10 +99,12 @@ class Automation {
           [key]: Automation.getValueOrField(nodes, value),
         }
       }, {}),
-    }
+    })
 
     return new Automation(trigger, action)
   }
 }
+
+const createAction = <T extends typeof FormNode>(action: Action<T>): Action<T> => action
 
 export { Automation }

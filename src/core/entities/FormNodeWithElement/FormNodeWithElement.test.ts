@@ -10,6 +10,7 @@ describe('FormNodeWithElement', () => {
         id: 'id',
         type: NodeType.FormNodeWithElement,
         element: 'div',
+        isVisible: true,
       })
     })
 
@@ -20,6 +21,7 @@ describe('FormNodeWithElement', () => {
         id: 'id',
         type: NodeType.FormNodeWithElement,
         element: 'span',
+        isVisible: true,
       })
     })
   })

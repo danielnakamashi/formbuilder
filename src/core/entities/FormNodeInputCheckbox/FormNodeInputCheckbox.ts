@@ -33,11 +33,9 @@ class FormNodeInputCheckbox extends FormNodeInput {
   }
 
   static override fromJson(json: FormNodeInputCheckboxJson): FormNodeInputCheckbox {
-    return new FormNodeInputCheckbox(json.id, {
-      name: json.name,
-      value: json.value,
-      checked: json.checked,
-    })
+    const { id, ...rest } = json
+
+    return new FormNodeInputCheckbox(id, rest)
   }
 }
 

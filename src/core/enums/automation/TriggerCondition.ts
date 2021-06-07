@@ -1,4 +1,5 @@
-enum Condition {
+enum TriggerCondition {
+  Any,
   Equals,
   GreaterThan,
   GreaterOrEqualsThan,
@@ -6,4 +7,4 @@ enum Condition {
   LessOrEqualsThan,
 }
 
-export { Condition }
+export { TriggerCondition }

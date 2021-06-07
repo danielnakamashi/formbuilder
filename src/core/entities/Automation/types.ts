@@ -1,33 +1,40 @@
 import { FormNode } from 'core/entities/FormNode'
 import { FormNodeInput } from 'core/entities/FormNodeInput'
-import { ActionType } from 'core/enums/automation/ActionType'
-import { Condition } from 'core/enums/automation/Condition'
+import { TriggerEvent } from 'core/enums/automation/TriggerEvent'
+import { TriggerAction } from 'core/enums/automation/TriggerAction'
+import { TriggerCondition } from 'core/enums/automation/TriggerCondition'
 
 type Trigger = {
   field: FormNodeInput
-  condition: Condition
+  event: TriggerEvent
+  condition: TriggerCondition
   valueOrField: string | FormNodeInput
 }
-
-interface Action {
-  type: ActionType.ChangeProperty
-  node: FormNode
-  properties: Record<string, string | FormNodeInput>
+interface Action<FormNodeType extends typeof FormNode = typeof FormNode> {
+  type: TriggerAction.ChangeProperty
+  node: InstanceType<FormNodeType>
+  properties: Record<
+    ConstructorParameters<FormNodeType>['length'] extends 2
+      ? keyof ConstructorParameters<FormNodeType>[1]
+      : string,
+    string | FormNodeInput
+  >
 }
 
-interface IAutomation {
+interface IAutomation<FormNodeType extends typeof FormNode> {
   trigger: Trigger
-  action: Action
+  action: Action<FormNodeType>
 }
 
 interface TriggerJson {
   field: { id: string }
-  condition: Condition
+  event: TriggerEvent
+  condition: TriggerCondition
   valueOrField: string | { id: string }
 }
 
 interface ActionJson {
-  type: ActionType.ChangeProperty
+  type: TriggerAction.ChangeProperty
   node: { id: string }
   properties: Record<string, string | { id: string }>
 }

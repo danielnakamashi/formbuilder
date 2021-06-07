@@ -12,6 +12,7 @@ describe('FormNodeSection', () => {
         title: '',
         children: [],
         element: 'div',
+        isVisible: true,
       })
     })
 
@@ -20,6 +21,7 @@ describe('FormNodeSection', () => {
         title: 'title',
         children: [new FormNodeSection('id2', { title: 'title2', children: [], element: 'p' })],
         element: 'span',
+        isVisible: false,
       })
 
       expect(formNodeSection.toJson()).toEqual({
@@ -33,9 +35,11 @@ describe('FormNodeSection', () => {
             title: 'title2',
             children: [],
             element: 'p',
+            isVisible: true,
           },
         ],
         element: 'span',
+        isVisible: false,
       })
     })
   })

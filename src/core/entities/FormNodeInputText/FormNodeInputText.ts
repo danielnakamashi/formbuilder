@@ -6,10 +6,9 @@ class FormNodeInputText extends FormNodeInput {
   protected override _type: NodeType = NodeType.FormNodeInputText
 
   static override fromJson(json: FormNodeInputJson): FormNodeInputText {
-    return new FormNodeInputText(json.id, {
-      name: json.name,
-      value: json.value,
-    })
+    const { id, ...rest } = json
+
+    return new FormNodeInputText(id, rest)
   }
 }
 

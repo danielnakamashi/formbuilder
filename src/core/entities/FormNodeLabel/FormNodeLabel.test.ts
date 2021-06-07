@@ -19,6 +19,7 @@ describe('FormNodeLabel', () => {
         },
       ],
       element: 'label',
+      isVisible: true,
     })
   })
 
@@ -33,12 +34,14 @@ describe('FormNodeLabel', () => {
           text: 'text',
         } as FormNodeTextJson,
       ],
+      isVisible: false,
     })
 
     expect(formNodeLabel).toBeInstanceOf(FormNodeLabel)
     expect(formNodeLabel.id).toEqual('id')
     expect(formNodeLabel.type).toEqual(NodeType.FormNodeLabel)
     expect(formNodeLabel.children).toHaveLength(1)
+    expect(formNodeLabel.isVisible).toBe(false)
 
     const child = formNodeLabel.children[0] as FormNodeText
 

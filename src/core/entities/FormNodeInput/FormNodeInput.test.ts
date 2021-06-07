@@ -15,6 +15,9 @@ describe('FormNodeInput', () => {
       name: 'name',
       value: 'value',
       inputType: 'text',
+      isDisabled: false,
+      isRequired: false,
+      isVisible: true,
     })
   })
 
@@ -24,6 +27,9 @@ describe('FormNodeInput', () => {
       type: NodeType.FormNodeInput,
       name: 'name',
       value: 'value',
+      isDisabled: true,
+      isRequired: true,
+      isVisible: false,
     })
 
     expect(formNodeInput).toBeInstanceOf(FormNodeInput)
@@ -32,5 +38,8 @@ describe('FormNodeInput', () => {
     expect(formNodeInput.name).toEqual('name')
     expect(formNodeInput.value).toEqual('value')
     expect(formNodeInput.inputType).toEqual('text')
+    expect(formNodeInput.isDisabled).toBe(true)
+    expect(formNodeInput.isRequired).toBe(true)
+    expect(formNodeInput.isVisible).toBe(false)
   })
 })
