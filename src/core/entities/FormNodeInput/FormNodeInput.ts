@@ -8,7 +8,7 @@ import { typeMapper } from 'core/utils/typeMapper'
 
 interface FormNodeInputConfig extends FormNodeWithElementConfig {
   name: string
-  value: string
+  value?: string
   inputType?: string
 }
 
@@ -28,7 +28,7 @@ class FormNodeInput extends FormNodeWithElement {
     super(id)
     this._element = config.element ?? 'input'
     this._name = config.name
-    this._value = config.value
+    this._value = config.value ?? ''
     this._inputType = config.inputType ?? 'text'
   }
 
