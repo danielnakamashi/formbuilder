@@ -1,4 +1,8 @@
+import { queryByText, fireEvent } from '@testing-library/dom'
 import {
+  ActionType,
+  Automation,
+  Condition,
   FormNodeInput,
   FormNodeInputCheckbox,
   FormNodeInputText,
@@ -83,5 +87,45 @@ describe('HTMLFormBuilder', () => {
       expect(element).toHaveAttribute('value', 'option 1')
       expect(element).toBeChecked()
     })
+  })
+
+  describe('should add events to DOM objects', () => {
+    const root = document.body
+    const inputText = new FormNodeInputText('id2', { name: 'name' })
+    const textNode = new FormNodeWithChildren('id3', {
+      children: [new FormNodeText('id4', { text: 'text to disapear' })],
+    })
+    const element = new HTMLFormBuilder().buildForm(
+      new FormNodeWithChildren('id', {
+        children: [inputText, textNode],
+      }),
+      [
+        new Automation(
+          {
+            field: inputText,
+            condition: Condition.Equals,
+            valueOrField: 'text',
+          },
+          {
+            type: ActionType.ChangeProperty,
+            node: textNode,
+            properties: {
+              style: 'display: none;',
+            },
+          }
+        ),
+      ]
+    )
+
+    root.appendChild(element as HTMLElement)
+
+    const input = root.querySelector('input')
+    const elementToDisapear = queryByText(root, 'text to disapear')
+
+    expect(elementToDisapear).toBeVisible()
+
+    fireEvent.change(input as HTMLInputElement, { target: { value: 'text' } })
+
+    expect(elementToDisapear).not.toBeVisible()
   })
 })
