@@ -1,8 +1,8 @@
 import { queryByText, fireEvent } from '@testing-library/dom'
 import {
-  ActionType,
+  TriggerAction,
   Automation,
-  Condition,
+  TriggerCondition,
   FormNodeInput,
   FormNodeInputCheckbox,
   FormNodeInputText,
@@ -10,6 +10,7 @@ import {
   FormNodeText,
   FormNodeWithChildren,
   FormNodeWithElement,
+  TriggerEvent,
 } from 'core'
 import { HTMLFormBuilder } from './HTMLFormBuilder'
 
@@ -103,15 +104,13 @@ describe('HTMLFormBuilder', () => {
         new Automation(
           {
             field: inputText,
-            condition: Condition.Equals,
+            event: TriggerEvent.Change,
+            condition: TriggerCondition.Equals,
             valueOrField: 'text',
           },
           {
-            type: ActionType.ChangeProperty,
+            type: TriggerAction.Hide,
             node: textNode,
-            properties: {
-              style: 'display: none;',
-            },
           }
         ),
       ]

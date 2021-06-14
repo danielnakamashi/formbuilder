@@ -7,6 +7,7 @@ interface FormNodeJson {
 }
 
 class FormNode {
+  public className = 'FormNode'
   protected _id: string
   protected _type: NodeType = NodeType.FormNode
 

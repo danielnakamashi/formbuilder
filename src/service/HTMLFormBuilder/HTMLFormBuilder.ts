@@ -1,5 +1,5 @@
 import { BuildFormService } from 'app/use-cases/buildForm/service'
-import { Condition } from 'core'
+import { TriggerCondition } from 'core/enums/automation/TriggerCondition'
 import {
   Action,
   Automation,
@@ -13,6 +13,9 @@ import {
   FormNodeWithChildren,
   FormNodeWithElement,
 } from 'core/entities'
+import { eventMapper } from './eventMapper'
+import { conditionMapper } from './condittionMapper'
+import { TriggerAction } from 'core'
 
 class HTMLFormBuilder implements BuildFormService {
   #nodesMap: Map<FormNode, HTMLElement | Text>
@@ -149,22 +152,57 @@ class HTMLFormBuilder implements BuildFormService {
     }
   }
 
-  #triggerAction(action: Action, actionNode: HTMLElement): void {
-    Object.entries(action.properties).forEach(([key, value]) => {
-      let valueExtracted: string
-      if (value instanceof FormNodeInput) {
-        const valueField = this.#nodesMap.get(value)
-        if (valueField === undefined) {
-          return
+  #hideNode(node: HTMLElement): void {
+    node.style.display = 'none'
+  }
+
+  #showNode(node: HTMLElement): void {
+    node.style.display = ''
+  }
+
+  #makeRequired(node: HTMLInputElement | HTMLSelectElement): void {
+    node.required = true
+  }
+
+  #makeOptional(node: HTMLInputElement | HTMLSelectElement): void {
+    node.required = false
+  }
+
+  #triggerAction(
+    action: Action,
+    actionNode: HTMLElement,
+    options: { inverted: boolean } = { inverted: false }
+  ): void {
+    switch (action.type) {
+      case TriggerAction.Hide:
+        if (options.inverted) {
+          this.#showNode(actionNode)
+        } else {
+          this.#hideNode(actionNode)
         }
-
-        valueExtracted = (valueField as HTMLInputElement).value
-      } else {
-        valueExtracted = value
-      }
-
-      actionNode.setAttribute(key, valueExtracted)
-    })
+        break
+      case TriggerAction.Show:
+        if (options.inverted) {
+          this.#hideNode(actionNode)
+        } else {
+          this.#showNode(actionNode)
+        }
+        break
+      case TriggerAction.MakeRequired:
+        if (options.inverted) {
+          this.#makeOptional(actionNode as HTMLInputElement | HTMLSelectElement)
+        } else {
+          this.#makeRequired(actionNode as HTMLInputElement | HTMLSelectElement)
+        }
+        break
+      case TriggerAction.MakeOptional:
+        if (options.inverted) {
+          this.#makeRequired(actionNode as HTMLInputElement | HTMLSelectElement)
+        } else {
+          this.#makeOptional(actionNode as HTMLInputElement | HTMLSelectElement)
+        }
+        break
+    }
   }
 
   #addAutomations(automations: ReadonlyArray<Automation>): void {
@@ -175,9 +213,12 @@ class HTMLFormBuilder implements BuildFormService {
         continue
       }
 
+      const {
+        trigger: { event, field, condition },
+      } = automation
       const { triggerField, triggerValueOrField, actionNode } = fields
 
-      triggerField.addEventListener('change', (evt) => {
+      triggerField.addEventListener(eventMapper[event][field.className], (evt) => {
         const value = (evt.target as HTMLInputElement).value
         let triggerValue: string
         if (triggerValueOrField instanceof HTMLInputElement) {
@@ -186,12 +227,10 @@ class HTMLFormBuilder implements BuildFormService {
           triggerValue = triggerValueOrField
         }
 
-        switch (automation.trigger.condition) {
-          case Condition.Equals:
-            if (value === triggerValue) {
-              this.#triggerAction(automation.action, actionNode)
-            }
-            break
+        if (conditionMapper[condition](value, triggerValue)) {
+          this.#triggerAction(automation.action, actionNode)
+        } else {
+          this.#triggerAction(automation.action, actionNode, { inverted: true })
         }
       })
     }

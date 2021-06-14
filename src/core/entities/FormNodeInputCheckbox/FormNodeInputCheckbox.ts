@@ -12,6 +12,7 @@ interface FormNodeInputCheckboxJson extends FormNodeInputJson {
 }
 
 class FormNodeInputCheckbox extends FormNodeInput {
+  public override className = 'FormNodeInputCheckbox'
   protected override _type: NodeType = NodeType.FormNodeInputCheckbox
   protected _checked: boolean
 
@@ -36,6 +37,10 @@ class FormNodeInputCheckbox extends FormNodeInput {
     const { id, ...rest } = json
 
     return new FormNodeInputCheckbox(id, rest)
+  }
+
+  static override toString(): string {
+    return 'FormNodeInputCheckbox'
   }
 }
 

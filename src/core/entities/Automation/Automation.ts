@@ -36,12 +36,6 @@ class Automation {
     return {
       type: this.action.type,
       node: { id: this.action.node.id },
-      properties: Object.entries(this.action.properties).reduce((prev, [key, value]) => {
-        return {
-          ...prev,
-          [key]: value instanceof FormNodeInput ? { id: value.id } : value,
-        }
-      }, {}),
     }
   }
 
@@ -93,12 +87,6 @@ class Automation {
     const action = createAction({
       type: json.action.type,
       node: Automation.findNodeById(nodes, json.action.node.id),
-      properties: Object.entries(json.action.properties).reduce((prev, [key, value]) => {
-        return {
-          ...prev,
-          [key]: Automation.getValueOrField(nodes, value),
-        }
-      }, {}),
     })
 
     return new Automation(trigger, action)

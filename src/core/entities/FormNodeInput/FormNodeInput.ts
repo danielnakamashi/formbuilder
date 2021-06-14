@@ -23,6 +23,7 @@ interface FormNodeInputJson extends FormNodeWithElementJson {
 }
 
 class FormNodeInput extends FormNodeWithElement {
+  public override className = 'FormNodeInput'
   protected override _type: NodeType = NodeType.FormNodeInput
   protected _name: string
   protected _value: string
@@ -75,6 +76,10 @@ class FormNodeInput extends FormNodeWithElement {
     const { id, ...rest } = json
 
     return new FormNodeInput(id, rest)
+  }
+
+  static override toString(): string {
+    return 'FormNodeInput'
   }
 }
 

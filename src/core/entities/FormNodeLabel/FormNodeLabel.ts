@@ -17,6 +17,7 @@ interface FormNodeLabelJson extends FormNodeWithChildrenJson {
 }
 
 class FormNodeLabel extends FormNodeWithChildren {
+  public override className = 'FormNodeLabel'
   protected override _type: NodeType = NodeType.FormNodeLabel
 
   constructor(id: string, config: FormNodeLabelConfig) {
@@ -33,6 +34,10 @@ class FormNodeLabel extends FormNodeWithChildren {
         (child) => (typeMapper[child.type] as typeof FormNode).fromJson(child) as FormNodeText
       ),
     })
+  }
+
+  static override toString(): string {
+    return 'FormNodeLabel'
   }
 }
 

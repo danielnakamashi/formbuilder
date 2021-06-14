@@ -12,6 +12,7 @@ interface FormNodeWithElementJson extends FormNodeJson {
 }
 
 class FormNodeWithElement extends FormNode {
+  public override className = 'FormNodeWithElement'
   protected override _type: NodeType = NodeType.FormNodeWithElement
   protected _element: string
   protected _isvisible: boolean
@@ -42,6 +43,10 @@ class FormNodeWithElement extends FormNode {
     const { id, ...rest } = json
 
     return new FormNodeWithElement(id, rest)
+  }
+
+  static override toString(): string {
+    return 'FormNodeWithElement'
   }
 }
 

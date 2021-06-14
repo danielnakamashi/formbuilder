@@ -16,6 +16,7 @@ interface FormNodeWithChildrenJson extends FormNodeWithElementJson {
 }
 
 class FormNodeWithChildren extends FormNodeWithElement {
+  public override className = 'FormNodeWithChildren'
   protected override _type: NodeType = NodeType.FormNodeWithChildren
   protected _children: Array<FormNode>
 
@@ -44,6 +45,10 @@ class FormNodeWithChildren extends FormNodeWithElement {
         (typeMapper[child.type] as typeof FormNode).fromJson(child)
       ),
     })
+  }
+
+  static override toString(): string {
+    return 'FormNodeWithChildren'
   }
 }
 

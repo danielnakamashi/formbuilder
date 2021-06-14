@@ -6,6 +6,7 @@ import { FormNodeInputText } from 'core/entities/FormNodeInputText'
 import { NodeType } from 'core/enums/NodeType'
 import { FormNodeInputJson } from 'core/entities/FormNodeInput'
 import { TriggerEvent } from 'core/enums'
+import { AutomationJson } from './types'
 
 describe('Automation', () => {
   describe('should convert to json', () => {
@@ -18,11 +19,8 @@ describe('Automation', () => {
           valueOrField: 'value',
         },
         {
-          type: TriggerAction.ChangeProperty,
+          type: TriggerAction.Hide,
           node: new FormNodeText('id2', { text: 'text' }),
-          properties: {
-            text: 'text2',
-          },
         }
       )
 
@@ -34,13 +32,10 @@ describe('Automation', () => {
           valueOrField: 'value',
         },
         action: {
-          type: TriggerAction.ChangeProperty,
+          type: TriggerAction.Hide,
           node: { id: 'id2' },
-          properties: {
-            text: 'text2',
-          },
         },
-      })
+      } as AutomationJson)
     })
 
     test('with field values', () => {
@@ -53,11 +48,8 @@ describe('Automation', () => {
           valueOrField: formInputText,
         },
         {
-          type: TriggerAction.ChangeProperty,
+          type: TriggerAction.Show,
           node: new FormNodeText('id3', { text: 'text' }),
-          properties: {
-            text: formInputText,
-          },
         }
       )
 
@@ -69,13 +61,10 @@ describe('Automation', () => {
           valueOrField: { id: 'id2' },
         },
         action: {
-          type: TriggerAction.ChangeProperty,
+          type: TriggerAction.Show,
           node: { id: 'id3' },
-          properties: {
-            text: { id: 'id2' },
-          },
         },
-      })
+      } as AutomationJson)
     })
   })
 
@@ -103,13 +92,10 @@ describe('Automation', () => {
             valueOrField: 'value',
           },
           action: {
-            type: TriggerAction.ChangeProperty,
+            type: TriggerAction.Hide,
             node: { id: 'id2' },
-            properties: {
-              text: 'text2',
-            },
           },
-        }
+        } as AutomationJson
       )
 
       expect(automation).toBeInstanceOf(Automation)
@@ -120,14 +106,7 @@ describe('Automation', () => {
       expect(automation.trigger.event).toEqual(TriggerEvent.Change)
       expect(automation.trigger.condition).toEqual(TriggerCondition.Equals)
       expect(automation.trigger.valueOrField).toEqual('value')
-      expect(automation.action.type).toEqual(TriggerAction.ChangeProperty)
-
-      const actionNode = automation.action.node as FormNodeText
-
-      expect(actionNode.id).toEqual('id2')
-      expect(actionNode.type).toEqual(NodeType.FormNodeText)
-      expect(actionNode.text).toEqual('text')
-      expect(automation.action.properties).toEqual({ text: 'text2' })
+      expect(automation.action.type).toEqual(TriggerAction.Hide)
     })
 
     test('with field values', () => {
@@ -159,13 +138,10 @@ describe('Automation', () => {
             valueOrField: { id: 'id2' },
           },
           action: {
-            type: TriggerAction.ChangeProperty,
+            type: TriggerAction.Show,
             node: { id: 'id3' },
-            properties: {
-              text: { id: 'id2' },
-            },
           },
-        }
+        } as AutomationJson
       )
 
       expect(automation).toBeInstanceOf(Automation)
@@ -182,20 +158,13 @@ describe('Automation', () => {
       expect(triggerValue.type).toEqual(NodeType.FormNodeInputText)
       expect(triggerValue.name).toEqual('name2')
       expect(triggerValue.value).toEqual('value2')
-      expect(automation.action.type).toEqual(TriggerAction.ChangeProperty)
+      expect(automation.action.type).toEqual(TriggerAction.Show)
 
       const actionNode = automation.action.node as FormNodeText
 
       expect(actionNode.id).toEqual('id3')
       expect(actionNode.type).toEqual(NodeType.FormNodeText)
       expect(actionNode.text).toEqual('text')
-
-      const inputText = automation.action.properties.text as FormNodeInputText
-
-      expect(inputText.id).toEqual('id2')
-      expect(inputText.type).toEqual(NodeType.FormNodeInputText)
-      expect(inputText.name).toEqual('name2')
-      expect(inputText.value).toEqual('value2')
     })
   })
 })

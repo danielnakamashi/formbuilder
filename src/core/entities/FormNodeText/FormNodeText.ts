@@ -11,6 +11,7 @@ interface FormNodeTextJson extends FormNodeJson {
 }
 
 class FormNodeText extends FormNode {
+  public override className = 'FormNodeText'
   protected override _type: NodeType = NodeType.FormNodeText
   _text: string
 
@@ -34,6 +35,10 @@ class FormNodeText extends FormNode {
     return new FormNodeText(json.id, {
       text: json.text,
     })
+  }
+
+  static override toString(): string {
+    return 'FormNodeText'
   }
 }
 

@@ -11,14 +11,8 @@ type Trigger = {
   valueOrField: string | FormNodeInput
 }
 interface Action<FormNodeType extends typeof FormNode = typeof FormNode> {
-  type: TriggerAction.ChangeProperty
+  type: TriggerAction
   node: InstanceType<FormNodeType>
-  properties: Record<
-    ConstructorParameters<FormNodeType>['length'] extends 2
-      ? keyof ConstructorParameters<FormNodeType>[1]
-      : string,
-    string | FormNodeInput
-  >
 }
 
 interface IAutomation<FormNodeType extends typeof FormNode> {
@@ -34,9 +28,8 @@ interface TriggerJson {
 }
 
 interface ActionJson {
-  type: TriggerAction.ChangeProperty
+  type: TriggerAction
   node: { id: string }
-  properties: Record<string, string | { id: string }>
 }
 
 interface AutomationJson {
