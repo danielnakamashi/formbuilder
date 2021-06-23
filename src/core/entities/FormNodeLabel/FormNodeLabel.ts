@@ -10,27 +10,49 @@ import { typeMapper } from 'core/utils/typeMapper'
 
 interface FormNodeLabelConfig extends FormNodeWithChildrenConfig {
   children: Array<FormNodeText>
+  for?: string
 }
 
 interface FormNodeLabelJson extends FormNodeWithChildrenJson {
   children: Array<FormNodeTextJson>
+  for?: string
 }
 
 class FormNodeLabel extends FormNodeWithChildren {
   public override className = 'FormNodeLabel'
   protected override _type: NodeType = NodeType.FormNodeLabel
+  protected override _children: Array<FormNodeText>
+  protected _for?: string
 
   constructor(id: string, config: FormNodeLabelConfig) {
     super(id, config)
+    this._children = config.children ?? []
+    this._for = config.for
     this._element = config.element ?? 'label'
   }
 
+  override get children(): Array<FormNodeText> {
+    return this._children
+  }
+
+  get for(): string {
+    return this._for ?? ''
+  }
+
+  override toJson(): FormNodeLabelJson {
+    return {
+      ...super.toJson(),
+      children: this.children.map((child) => child.toJson()),
+      for: this.for,
+    }
+  }
+
   static override fromJson(json: FormNodeLabelJson): FormNodeLabel {
-    const { id, ...rest } = json
+    const { id, children, ...rest } = json
 
     return new FormNodeLabel(id, {
       ...rest,
-      children: json.children.map(
+      children: children.map(
         (child) => (typeMapper[child.type] as typeof FormNode).fromJson(child) as FormNodeText
       ),
     })
