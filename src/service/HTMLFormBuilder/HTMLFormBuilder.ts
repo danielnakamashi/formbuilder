@@ -15,7 +15,7 @@ import {
 } from 'core/entities'
 import { eventMapper } from './eventMapper'
 import { conditionMapper } from './condittionMapper'
-import { TriggerAction } from 'core'
+import { TriggerAction, TriggerEvent } from 'core'
 
 class HTMLFormBuilder implements BuildFormService {
   #nodesMap: Map<FormNode, HTMLElement | Text>
@@ -26,7 +26,7 @@ class HTMLFormBuilder implements BuildFormService {
 
   #buildFromFormNodeInputCheckbox(node: FormNodeInputCheckbox): HTMLInputElement {
     const element = this.#buildFromFormNodeInput(node)
-    this.#addAttributeToElement(element, {
+    this.#addAttributesToElement(element, {
       ...(node.checked ? { checked: 'checked' } : {}),
     })
 
@@ -39,7 +39,7 @@ class HTMLFormBuilder implements BuildFormService {
 
   #buildFromFormNodeInput(node: FormNodeInput): HTMLInputElement {
     const element = this.#buildFromFormNodeWithElement(node)
-    this.#addAttributeToElement(element, {
+    this.#addAttributesToElement(element, {
       name: node.name,
       value: node.value,
       type: node.inputType,
@@ -49,7 +49,12 @@ class HTMLFormBuilder implements BuildFormService {
   }
 
   #buildFromFormNodeLabel(node: FormNodeLabel): HTMLLabelElement {
-    return this.#buildFromFormNodeWithChildren(node) as HTMLLabelElement
+    const element = this.#buildFromFormNodeWithChildren(node) as HTMLLabelElement
+    this.#addAttributesToElement(element, {
+      for: node.for,
+    })
+
+    return element
   }
 
   #buildFromFormNodeSection(node: FormNodeSection): HTMLElement {
@@ -70,7 +75,16 @@ class HTMLFormBuilder implements BuildFormService {
   }
 
   #buildFromFormNodeWithElement(node: FormNodeWithElement): HTMLElement {
-    return document.createElement(node.element)
+    const element = document.createElement(node.element)
+    this.#addAttributesToElement(element, {
+      id: node.id,
+    })
+
+    if (!node.isVisible) {
+      this.#hideNode(element)
+    }
+
+    return element
   }
 
   #buildFromFormNodeText(node: FormNodeText): Text {
@@ -81,7 +95,7 @@ class HTMLFormBuilder implements BuildFormService {
     Object.entries(data).forEach(([key, value]) => (element.dataset[key] = value))
   }
 
-  #addAttributeToElement(element: HTMLElement, attrs: Record<string, string>): void {
+  #addAttributesToElement(element: HTMLElement, attrs: Record<string, string>): void {
     Object.entries(attrs).forEach(([key, value]) => element.setAttribute(key, value))
   }
 
@@ -117,7 +131,7 @@ class HTMLFormBuilder implements BuildFormService {
     | undefined
     | {
         triggerField: HTMLInputElement
-        triggerValueOrField: string | HTMLInputElement
+        triggerValueOrField: string | boolean | HTMLInputElement
         actionNode: HTMLElement
       } {
     const { trigger, action } = automation
@@ -205,6 +219,72 @@ class HTMLFormBuilder implements BuildFormService {
     }
   }
 
+  #handleTextChangeEvent(automation: Automation, triggerField: HTMLInputElement): void {
+    const fields = this.#extractValuesAndFields(automation)
+
+    if (fields === undefined) {
+      return
+    }
+
+    const { triggerValueOrField, actionNode } = fields
+    const {
+      trigger: { condition },
+    } = automation
+    const value = triggerField.value
+    let triggerValue: string
+    if (triggerValueOrField instanceof HTMLInputElement) {
+      triggerValue = (triggerValueOrField as HTMLInputElement).value
+    } else if (typeof triggerValueOrField === 'string') {
+      triggerValue = triggerValueOrField
+    } else {
+      return
+    }
+
+    if (conditionMapper[condition](value, triggerValue)) {
+      this.#triggerAction(automation.action, actionNode)
+    } else {
+      this.#triggerAction(automation.action, actionNode, { inverted: true })
+    }
+  }
+
+  #handleCheckboxChangeEvent(automation: Automation, triggerField: HTMLInputElement): void {
+    const fields = this.#extractValuesAndFields(automation)
+
+    if (fields === undefined) {
+      return
+    }
+
+    const { triggerValueOrField, actionNode } = fields
+    const {
+      trigger: { condition },
+    } = automation
+    const isChecked = triggerField.checked
+    if (typeof triggerValueOrField !== 'boolean') {
+      return
+    }
+
+    if (conditionMapper[condition](isChecked, triggerValueOrField)) {
+      this.#triggerAction(automation.action, actionNode)
+    } else {
+      this.#triggerAction(automation.action, actionNode, { inverted: true })
+    }
+  }
+
+  #handleChangeEvent(automation: Automation, evt: Event): void {
+    const target = evt.target as HTMLInputElement
+
+    switch (target.type) {
+      case 'text': {
+        this.#handleTextChangeEvent(automation, target)
+        break
+      }
+      case 'checkbox': {
+        this.#handleCheckboxChangeEvent(automation, target)
+        break
+      }
+    }
+  }
+
   #addAutomations(automations: ReadonlyArray<Automation>): void {
     for (const automation of automations) {
       const fields = this.#extractValuesAndFields(automation)
@@ -214,24 +294,12 @@ class HTMLFormBuilder implements BuildFormService {
       }
 
       const {
-        trigger: { event, field, condition },
+        trigger: { event, field },
       } = automation
-      const { triggerField, triggerValueOrField, actionNode } = fields
+      const { triggerField } = fields
 
       triggerField.addEventListener(eventMapper[event][field.className], (evt) => {
-        const value = (evt.target as HTMLInputElement).value
-        let triggerValue: string
-        if (triggerValueOrField instanceof HTMLInputElement) {
-          triggerValue = (triggerValueOrField as HTMLInputElement).value
-        } else {
-          triggerValue = triggerValueOrField
-        }
-
-        if (conditionMapper[condition](value, triggerValue)) {
-          this.#triggerAction(automation.action, actionNode)
-        } else {
-          this.#triggerAction(automation.action, actionNode, { inverted: true })
-        }
+        this.#handleChangeEvent(automation, evt)
       })
     }
   }
