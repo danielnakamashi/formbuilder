@@ -41,8 +41,8 @@ class Automation {
 
   protected static getValueOrField(
     nodes: ReadonlyArray<FormNodeJson>,
-    valueOrField: string | { id: string }
-  ): FormNodeInput | string {
+    valueOrField: string | boolean | { id: string }
+  ): FormNodeInput | string | boolean {
     if (typeof valueOrField === 'object' && valueOrField !== null && 'id' in valueOrField) {
       const id = valueOrField.id
       const triggerValue = nodes.find((node) => node.id === id)
