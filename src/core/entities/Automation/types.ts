@@ -8,7 +8,7 @@ type Trigger = {
   field: FormNodeInput
   event: TriggerEvent
   condition: TriggerCondition
-  valueOrField: string | FormNodeInput
+  valueOrField: string | boolean | FormNodeInput
 }
 interface Action<FormNodeType extends typeof FormNode = typeof FormNode> {
   type: TriggerAction
@@ -24,7 +24,7 @@ interface TriggerJson {
   field: { id: string }
   event: TriggerEvent
   condition: TriggerCondition
-  valueOrField: string | { id: string }
+  valueOrField: string | boolean | { id: string }
 }
 
 interface ActionJson {
