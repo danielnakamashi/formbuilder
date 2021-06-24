@@ -1,0 +1,19 @@
+{
+  "name": "@formbuilda/service",
+  "version": "0.0.1",
+  "description": "HTML service for @formbuilda/core",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "source": "src/index.ts",
+  "repository": "https://github.com/danielnakamashi/formbuilder",
+  "author": "Daniel Nakamashi",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc --noEmitOnError",
+    "lint:ts": "tsc --project tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@formbuilda/core": "*"
+  }
+}

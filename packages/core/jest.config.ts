@@ -60,13 +60,17 @@ export default {
   // globalTeardown: undefined,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.json',
+    },
+  },
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  moduleDirectories: ['node_modules'],
+  moduleDirectories: ['node_modules', '<rootDir>/src'],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -94,7 +98,7 @@ export default {
   preset: 'ts-jest',
 
   // Run tests from one or more projects
-  projects: ['<rootDir>/packages/core', '<rootDir>/packages/web', '<rootDir>/packages/service'],
+  // projects: ['<rootDir>/src/core', '<rootDir>/src/app', '<rootDir>/src/service'],
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
@@ -112,7 +116,7 @@ export default {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  // rootDir: undefined,
+  rootDir: '.',
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -150,9 +154,7 @@ export default {
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  // testPathIgnorePatterns: [
-  //   "/node_modules/"
-  // ],
+  testPathIgnorePatterns: ['/node_modules/', '/lib/'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
