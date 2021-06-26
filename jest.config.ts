@@ -94,7 +94,7 @@ export default {
   preset: 'ts-jest',
 
   // Run tests from one or more projects
-  projects: ['<rootDir>/packages/core', '<rootDir>/packages/web', '<rootDir>/packages/service'],
+  projects: ['<rootDir>/packages/core', '<rootDir>/packages/demo', '<rootDir>/packages/service'],
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
