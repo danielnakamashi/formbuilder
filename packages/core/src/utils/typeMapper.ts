@@ -2,6 +2,7 @@ import { NodeType } from '../enums/NodeType'
 
 const typeMapper: Record<NodeType, unknown> = {
   [NodeType.FormNode]: undefined,
+  [NodeType.FormNodeFieldset]: undefined,
   [NodeType.FormNodeInputCheckbox]: undefined,
   [NodeType.FormNodeInput]: undefined,
   [NodeType.FormNodeInputText]: undefined,
