@@ -10,12 +10,12 @@ type Trigger = {
   condition: TriggerCondition
   valueOrField: string | boolean | FormNodeInput
 }
-interface Action<FormNodeType extends typeof FormNode = typeof FormNode> {
+interface Action<FormNodeType extends FormNode = FormNode> {
   type: TriggerAction
-  node: InstanceType<FormNodeType>
+  node: FormNodeType
 }
 
-interface IAutomation<FormNodeType extends typeof FormNode> {
+interface IAutomation<FormNodeType extends FormNode> {
   trigger: Trigger
   action: Action<FormNodeType>
 }

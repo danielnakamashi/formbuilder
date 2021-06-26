@@ -93,6 +93,6 @@ class Automation {
   }
 }
 
-const createAction = <T extends typeof FormNode>(action: Action<T>): Action<T> => action
+const createAction = <T extends FormNode>(action: Action<T>): Action<T> => action
 
 export { Automation }
